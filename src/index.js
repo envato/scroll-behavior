@@ -121,9 +121,14 @@ export default class ScrollBehavior {
   };
 
   _saveWindowPosition = () => {
-    this._saveWindowPositionHandle = null;
+    try {
+      this._saveWindowPositionHandle = null;
 
-    this._savePosition(null, window);
+      this._savePosition(null, window);
+    } catch (e) {
+      // mobile ios with cookies disabled causes error spam. SFTU please
+      if (e.message !== "The operation is insecure.") throw e
+    };
   };
 
   _cancelCheckWindowScroll() {
